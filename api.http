@@ -1,0 +1,31 @@
+### POST 의료진 등록
+POST http://localhost:3000/doctors
+Content-Type: application/json
+
+{
+  "name": "정의사",
+  "department": "피부과",
+  "profileImage": "/images/jung.jpg",
+  "description": "피부 질환 전문"
+}
+
+### POST 의료진 등록
+DELETE http://localhost:3000/doctors
+Content-Type: application/json
+
+{
+  "name": "정의사",
+  "department": "피부과"
+}
+
+
+PUT http://localhost:3000/doctors/2
+Content-Type: application/json
+
+{
+  "name": "업데이트된 김의사",
+  "department": "심장내과",
+  "profileImage": "/images/kim_new.jpg",
+  "description": "심장 전문으로 변경됨"
+}
+
