@@ -19,6 +19,7 @@ Content-Type: application/json
 }
 
 
+### POST 의료진 등록
 PUT http://localhost:3000/doctors/2
 Content-Type: application/json
 
@@ -29,3 +30,22 @@ Content-Type: application/json
   "description": "심장 전문으로 변경됨"
 }
 
+
+
+
+###상담등록
+POST http://localhost:3000/consultations
+Content-Type: application/json
+
+{
+  "status": "대기중",
+  "subject": "우리 강아지 발에 염증이 있어요",
+  "content": "갑자기 발을 계속 핥고 아파하는데 병원 가야 할까요?",
+  "ownerName": "김미라",
+  "password": "1234",
+  "email": "mira@example.com",
+  "agreeEmail": "Y",
+  "phoneNumber": "010-1234-5678",
+  "agreeSms": "N",
+  "agreePrivacy": "Y"
+}

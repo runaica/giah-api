@@ -70,7 +70,7 @@ notices
 router.delete('/:id', (req, res) => {
   const { id } = req.params;
 
-  const sql = `DELETE FROM doctors WHERE id = ?`;
+  const sql = `DELETE FROM notices WHERE id = ?`;
   db.run(sql, [id], function (err) {
     if (err) {
       console.error(err);
@@ -78,7 +78,7 @@ router.delete('/:id', (req, res) => {
     }
 
     if (this.changes === 0) {
-      return res.status(404).json({ message: '해당 ID의 의료진 없음' });
+      return res.status(404).json({ message: '해당 ID의 공지사항항 없음' });
     }
 
     res.status(200).json({ message: '삭제 완료', deletedId: id });
