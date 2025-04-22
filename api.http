@@ -49,3 +49,24 @@ Content-Type: application/json
   "agreeSms": "N",
   "agreePrivacy": "Y"
 }
+
+###
+DELETE http://localhost:3000/consultations/1
+
+###
+PUT http://localhost:3000/consultations/1
+Content-Type: application/json
+
+{
+  "status": "답변완료",
+  "subject": "우리 강아지 발에 염증이 있어요 - 업데이트",
+  "content": "상담 답변 받았습니다 감사합니다!",
+  "ownerName": "김미라",
+  "password": "1234",
+  "email": "mira@example.com",
+  "agreeEmail": "Y",
+  "phoneNumber": "010-1234-5678",
+  "agreeSms": "N",
+  "agreePrivacy": "Y"
+}
+
