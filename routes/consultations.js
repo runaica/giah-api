@@ -50,44 +50,56 @@ router.post('/', (req, res) => {
 });
 
 // DELETE - 상담 삭제
+// DELETE /consultations/:id
 router.delete('/:id', (req, res) => {
-  const { id } = req.params;
-  const sql = 'DELETE FROM consultation WHERE id = ?';
-  db.run(sql, [id], function (err) {
-    if (err) {
-      console.error(err);
-      return res.status(500).send('DB 삭제 오류');
-    }
-    if (this.changes === 0) {
-      return res.status(404).send('Consultation not found');
-    }
-    res.json({ message: 'Consultation deleted successfully' });
+  const id = req.params.id;
+  const password = req.body.password;
+
+  db.get('SELECT password FROM consultation WHERE id = ?', [id], (err, row) => {
+    if (err) return res.status(500).send('DB 오류');
+    if (!row) return res.status(404).send('상담글 없음');
+    if (row.password !== password) return res.status(403).send('비밀번호 불일치');
+
+    db.run('DELETE FROM consultation WHERE id = ?', [id], function(err) {
+      if (err) return res.status(500).send('삭제 실패');
+      res.sendStatus(200);
+    });
   });
 });
 
-// PUT - 상담 수정
+
+// routes/consultations.js
 router.put('/:id', (req, res) => {
   const { id } = req.params;
-  const { status, subject, content, ownerName, password, email, agreeEmail, phoneNumber, agreeSms, agreePrivacy } = req.body;
+  const {
+    status, subject, content, ownerName, password,
+    email, agreeEmail, phoneNumber, agreeSms, agreePrivacy
+  } = req.body;
 
   const sql = `
     UPDATE consultation
-    SET status = ?, subject = ?, content = ?, ownerName = ?, password = ?, 
+    SET status = ?, subject = ?, content = ?, ownerName = ?, 
         email = ?, agreeEmail = ?, phoneNumber = ?, agreeSms = ?, agreePrivacy = ?
     WHERE id = ?
   `;
-  const params = [status, subject, content, ownerName, password, email, agreeEmail, phoneNumber, agreeSms, agreePrivacy, id];
+  const params = [
+    status, subject, content, ownerName,
+    email, agreeEmail, phoneNumber, agreeSms, agreePrivacy,
+    id
+  ];
 
-  db.run(sql, params, function (err) {
-    if (err) {
-      console.error(err);
-      return res.status(500).send('DB 업데이트 오류');
-    }
-    if (this.changes === 0) {
-      return res.status(404).send('Consultation not found');
-    }
-    res.json({ message: 'Consultation updated successfully' });
+  db.get('SELECT password FROM consultation WHERE id = ?', [id], (err, row) => {
+    if (err) return res.status(500).send('DB 오류');
+    if (!row) return res.status(404).send('상담글 없음');
+    if (row.password !== password) return res.status(403).send('비밀번호 불일치');
+
+    db.run(sql, params, function (err) {
+      if (err) return res.status(500).send('DB 업데이트 오류');
+      if (this.changes === 0) return res.status(404).send('Consultation not found');
+      res.json({ message: 'Consultation updated successfully' });
+    });
   });
 });
+
 
 module.exports = router;

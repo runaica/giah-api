@@ -42,12 +42,15 @@ db.serialize(() => {
       createdAt TEXT DEFAULT (datetime('now', 'localtime')) -- 작성 시각
     )
   `);
+   // 예약 테이블 DROP
+   db.run(`DROP TABLE IF EXISTS reservation`);
 
   //예약테이블블
   db.run(`
     CREATE TABLE IF NOT EXISTS reservation (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       ownerName TEXT NOT NULL,         -- 보호자 이름
+      insertDate TEXT NOT NULL,              -- 등록시간
       petName TEXT NOT NULL,           -- 반려동물 이름
       reservationDate TEXT NOT NULL,   -- 예약 날짜 (예: 2025-04-18)
       reservationTime TEXT NOT NULL,   -- 예약 시간 (예: 14:30)
